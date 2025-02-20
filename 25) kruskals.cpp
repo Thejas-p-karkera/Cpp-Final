@@ -1,3 +1,5 @@
+//Construct Minimum Spanning Tree using Kruskal’s algorithm.
+
 #include<iostream>
 using namespace std;
 
