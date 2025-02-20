@@ -32,14 +32,15 @@ void merge(int arr[], int left, int mid, int right)
         if (leftArr[i] <= rightArr[j]) 
         {
             arr[k] = leftArr[i]; // Take smaller element from left array
+            k++;
             i++;
         }
         else
         {
             arr[k] = rightArr[j]; // Take smaller element from right array
+            k++;
             j++;
         }
-        k++;
     }
 
     // Copy any remaining elements from leftArr
@@ -64,7 +65,7 @@ void mergeSort(int arr[], int left, int right)
 {
     if (left < right)       // Base condition to stop recursion
     {
-        int mid = left + (right - left) / 2; // Find the middle point
+        int mid = (left + right) / 2; // Find the middle point
 
         mergeSort(arr, left, mid);     // Recursively sort the left half
         mergeSort(arr, mid + 1, right); // Recursively sort the right half
@@ -86,28 +87,28 @@ void printArray(int arr[], int size)
 // Main function
 int main() 
 {
-    int size;
+    int n;
 
     // Taking user input for array size
     cout << "Enter the number of elements: ";
-    cin >> size;
+    cin >> n;
 
-    int* arr = new int[size]; // Declaring array
+    int* arr = new int[n]; // Declaring array
 
     // Taking user input for array elements
-    cout << "Enter " << size << " elements: ";
-    for (int i = 0; i < size; i++) 
+    cout << "Enter " << n << " elements: ";
+    for (int i = 0; i < n; i++) 
     {
         cin >> arr[i];
     }
 
     cout << "Original array: ";
-    printArray(arr, size); // Print original array
+    printArray(arr, n); // Print original array
 
-    mergeSort(arr, 0, size - 1); // Call merge sort
+    mergeSort(arr, 0, n - 1); // Call merge sort
 
     cout << "Sorted array: ";
-    printArray(arr, size); // Print sorted array
+    printArray(arr, n); // Print sorted array
 
     return 0;
 }
