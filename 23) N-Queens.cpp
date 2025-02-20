@@ -1,3 +1,5 @@
+//Demonstrate solution for N-Queens problem using backtracking.
+
 #include<iostream>
 using namespace std;
 
