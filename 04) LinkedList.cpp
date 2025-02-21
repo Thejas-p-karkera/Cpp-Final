@@ -211,3 +211,143 @@ int main()
 		}
 	}
 }
+
+
+//---------------------------------------------------------------------------------------------------------
+
+
+#include<iostream>
+using namespace std;
+
+class Node
+{
+public:
+	int data;
+	Node* next;
+
+	Node(int val)
+	{
+		data = val;
+		next = NULL;
+	}
+};
+
+void insertAtFront(Node*& head)
+{
+	int ele;
+	cout << "Enter the element to insert: ";
+	cin >> ele;
+
+	Node* newNode = new Node(ele);
+	newNode->next = head;
+	head = newNode;
+}
+
+void insertAtRear(Node*& head)
+{
+	int ele;
+	cout << "Enter the element to insert: ";
+	cin >> ele;
+
+	Node* newNode = new Node(ele);
+	Node* temp = head;
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+	}
+	temp->next = newNode;
+}
+
+void displayList(Node*& head)
+{
+	if (head == NULL)
+	{
+		cout << "Empty List";
+		return;
+	}
+
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		cout << temp->data << "->";
+		temp = temp->next;
+	}
+	cout << "NULL" << endl;
+}
+
+void deleteInt(Node*& head)
+{
+	int ele;
+	cout << "Enter the element to delete: ";
+	cin >> ele;
+
+	Node* temp = head;
+	Node* dlt;
+
+	while (temp != NULL)
+	{
+		if (temp->next->data == ele)
+		{
+			dlt = temp->next;
+			temp->next = dlt->next;
+			free(dlt);
+			break;
+		}
+		else
+		{
+			temp = temp->next;
+		}
+		if (temp->next == NULL)
+		{
+			cout << "The ele does not found";
+			break;
+		}
+	}
+
+	
+}
+
+void main()
+{
+	Node* head = NULL;
+
+	while (true)
+	{
+		cout << "\n1. Insert at front\n";
+		cout << "2. Insert at Rear\n";
+		cout << "3. Delete\n";
+		cout << "4. Display\n";
+		cout << "5. Exit\n";
+		cout << "Enter your choice: ";
+		int ch;
+		cin >> ch;
+
+		switch (ch)
+		{
+			case 1:
+				insertAtFront(head);
+				break;
+
+			case 2:
+				insertAtRear(head);
+				break;
+
+			case 3:
+				deleteInt(head);
+				break;
+
+			case 4:
+				displayList(head);
+				break;
+
+			case 5:
+				return;
+
+			default:
+				cout << "Enter a valid choice";
+				break;
+		}
+
+	}
+
+}
