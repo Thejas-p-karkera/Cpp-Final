@@ -3,79 +3,129 @@
 #include <iostream>
 using namespace std;
 
-void DFS(int** adjMatrix, int n, int strt, bool* visited)
+class Stack
 {
-	visited[strt] = true;
+public:
+	int* arr;
+	int top, size;
 
-	for (int i = 0; i < n; i++)
+	Stack(int size)
 	{
-		if (adjMatrix[strt][i] == 1 && !visited[i])
-		{
-			DFS(adjMatrix, n, i, visited);
-		}
+		this->size = size; // Fixed incorrect size initialization
+		arr = new int[size];
+		top = -1;
 	}
-}
 
-int main()
+	bool empty()
+	{
+		return top == -1;
+	}
+
+	void push(int val)
+	{
+		top++;
+		arr[top] = val;
+	}
+
+	int pop()
+	{
+		int removed = arr[top];
+		top--;
+		return removed;
+	}
+};
+
+// DFS function to check connectivity
+bool DFS(int startNode, int** graph, int n)
 {
-	int n;
-	cout << "Enter the number of vertices: ";
-	cin >> n;
-
-	int** adjMatrix = new int* [n];
-
-	for (int i = 0; i < n; i++)
-	{
-		adjMatrix[i] = new int[n];
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		for(int j = 0; j < n; j++)
-		{
-			adjMatrix[i][j] = 0;
-		}
-	}
-
 	bool* visited = new bool[n];
-	for(int i=0; i<n; i++)
+
+	// Initially mark all nodes as unvisited
+	for (int i = 0; i < n; i++)
 	{
 		visited[i] = false;
 	}
 
-	//bool visited[100] = {false};
-	int m;
-	cout << "Enter the number of edges: ";
-	cin >> m;
+	Stack s(n);
+	s.push(startNode);
+	visited[startNode] = true;
 
-	int src,dst;
-	cout << "Enter the edges (source & destination):" << endl;
-	for (int i = 0; i < m; i++)
+	while (!s.empty())
 	{
-		cin >> src >> dst;
-		adjMatrix[src][dst] = 1;
-		adjMatrix[dst][src] = 1;
-	}
+		int current = s.pop();
 
-	DFS(adjMatrix, n, 0, visited);
-	bool isConnected = true;
+		for (int i = n - 1; i >= 0; i--)
+		{
+			if (graph[current][i] == 1 && !visited[i])
+			{
+				s.push(i);
+				visited[i] = true;
+			}
+		}
+	}
 
 	for (int i = 0; i < n; i++)
 	{
 		if (!visited[i])
 		{
-			isConnected = false;
-			break;
+			return false; // Graph is not connected
+		}
+	}
+	return true;
+}
+
+int main()
+{
+	int n;
+	cout << "Enter the number of nodes: ";
+	cin >> n;
+
+	int** graph = new int* [n];
+
+	for (int i = 0; i < n; i++)
+	{
+		graph[i] = new int[n];
+	}
+
+	// Initialize adjacency matrix to 0
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			graph[i][j] = 0;
 		}
 	}
 
-	if (isConnected)
+	int m;
+	cout << "Enter the number of edges: ";
+	cin >> m;
+
+	int ch;
+	cout << "Enter '0' for Directed, '1' for Undirected: ";
+	cin >> ch;
+
+	int src, dst;
+	for (int i = 0; i < m; i++)
 	{
-		cout << "The graph is connected." << endl;
-	} 
-	else 
-	{
-		cout << "The graph is NOT connected." << endl;
+		cout << "Enter the edges (source & destination): ";
+		cin >> src >> dst;
+
+		graph[src][dst] = 1;
+		if (ch == 1)
+		{
+			graph[dst][src] = 1;
+		}
 	}
+
+	// Check if the graph is connected
+	if (DFS(0,graph, n))
+	{
+		cout << "The graph is Connected.\n";
+	}
+	else
+	{
+		cout << "The graph is Not Connected.\n";
+	}
+
 	return 0;
 }
